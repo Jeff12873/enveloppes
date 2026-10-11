@@ -39,6 +39,21 @@ install -m 644 bureau/flatpak/$ID.desktop "$FICHIERS/share/applications/"
 install -m 644 bureau/flatpak/$ID.metainfo.xml "$FICHIERS/share/metainfo/"
 install -m 644 bureau/icone.png "$FICHIERS/share/icons/hicolor/512x512/apps/$ID.png"
 
+# Fiche AppStream : ce que lisent Warehouse, Discover ou GNOME Logiciels pour afficher l'application
+# dans le catalogue du dépôt (nom, description, icône). Construite à partir du metainfo.
+mkdir -p "$FICHIERS/share/app-info/xmls"
+for TAILLE in 64 128; do
+  mkdir -p "$FICHIERS/share/app-info/icons/flatpak/${TAILLE}x${TAILLE}"
+  install -m 644 bureau/flatpak/icone-$TAILLE.png "$FICHIERS/share/app-info/icons/flatpak/${TAILLE}x${TAILLE}/$ID.png"
+done
+{
+  echo '<?xml version="1.0" encoding="UTF-8"?>'
+  echo '<components version="0.14" origin="flatpak">'
+  sed -e '1d' -e "s|</component>|  <icon type=\"cached\" width=\"64\" height=\"64\">$ID.png</icon>\n  <icon type=\"cached\" width=\"128\" height=\"128\">$ID.png</icon>\n  <bundle type=\"flatpak\">app/$ID/x86_64/master</bundle>\n</component>|" \
+    bureau/flatpak/$ID.metainfo.xml
+  echo '</components>'
+} | gzip > "$FICHIERS/share/app-info/xmls/$ID.xml.gz"
+
 echo "3/5  Permissions"
 # Pour « Commencer avec mes données » : le Flatpak local saura où trouver le fichier importé
 DONNEES=""

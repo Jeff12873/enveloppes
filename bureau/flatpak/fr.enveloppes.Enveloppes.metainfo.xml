@@ -11,6 +11,14 @@
     <p>Données chiffrées, synchronisées par un simple fichier. Aucun accès à Internet.</p>
   </description>
   <launchable type="desktop-id">fr.enveloppes.Enveloppes.desktop</launchable>
+  <categories>
+    <category>Office</category>
+    <category>Finance</category>
+  </categories>
+  <url type="homepage">https://github.com/Jeff12873/enveloppes</url>
+  <developer id="io.github.jeff12873">
+    <name>Jeff12873</name>
+  </developer>
   <content_rating type="oars-1.1"/>
   <releases>
     <release version="1.0.0" date="2026-10-11"/>
