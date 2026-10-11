@@ -10,12 +10,13 @@ Elle remplace le tableur `Gestion épargne mensuelle.ods`.
 
 ## Lancer
 
-**Sur Linux, depuis le dépôt Flatpak** (mises à jour automatiques, visible dans Warehouse) :
+**Sur Linux, depuis le dépôt Flatpak FlatKein** (mises à jour automatiques, visible dans Warehouse) :
 
-    flatpak install --user https://jeff12873.github.io/enveloppes/enveloppes.flatpakref
+    flatpak install --user https://jeff12873.github.io/FlatKein/fr.enveloppes.Enveloppes.flatpakref
 
-Chaque envoi sur la branche `main` fabrique, signe et publie une nouvelle version
-(`.github/workflows/flatpak.yml`). Warehouse la propose ensuite comme mise à jour.
+Chaque envoi sur la branche `main` fabrique `Enveloppes.flatpak` et le publie dans les Releases
+(`.github/workflows/flatpak.yml`). Le dépôt [FlatKein](https://github.com/Jeff12873/FlatKein) le signe
+et le distribue ; Warehouse le propose ensuite comme mise à jour.
 
 **Sur Linux, en Flatpak fabriqué localement** : `sh outils/flatpak.sh` fabrique `Enveloppes.flatpak`
 et l'installe. Ensuite, l'application est dans le menu. Relancer la même commande après une modification
@@ -61,5 +62,5 @@ puis ouvrir http://localhost:8000.
 
 ## Ce qui n'est jamais publié
 
-`prive/` (données importées, clé de signature), le tableur, les fichiers `.enveloppes`, les AppImage et
+`prive/` (données importées, clé de signature du dépôt FlatKein), le tableur, les fichiers `.enveloppes`, les AppImage et
 `.flatpak` sont exclus par `.gitignore`. Le dépôt ne contient que le code et la documentation.

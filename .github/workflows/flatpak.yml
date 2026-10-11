@@ -1,6 +1,8 @@
-# À chaque envoi sur « main » : fabrique le Flatpak, signe le dépôt et le publie sur GitHub Pages.
-# Secret nécessaire : CLE_GPG_PRIVEE (clé privée de signature).
-# Variable nécessaire : CLE_GPG_ID (identifiant de cette clé).
+# À chaque envoi sur « main » : fabrique Enveloppes.flatpak et le publie dans les Releases GitHub.
+# Le dépôt Flatpak FlatKein (Jeff12873/FlatKein) récupère ensuite cette Release, la signe et la distribue.
+#
+# Secret facultatif : FLATKEIN_JETON, pour prévenir FlatKein tout de suite (voir son README).
+# Sans lui, FlatKein vérifie les nouvelles versions toutes les 6 heures.
 
 name: Flatpak
 
@@ -10,17 +12,13 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
+  contents: write
 
 jobs:
   construire:
     runs-on: ubuntu-24.04
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
 
@@ -36,30 +34,23 @@ jobs:
           flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
           flatpak install --user -y --noninteractive flathub org.freedesktop.Platform//25.08 org.electronjs.Electron2.BaseApp//25.08
 
-      - name: Clé de signature
-        run: echo "$CLE_GPG_PRIVEE" | gpg --batch --import
-        env:
-          CLE_GPG_PRIVEE: ${{ secrets.CLE_GPG_PRIVEE }}
-
       - name: Dépendances
         run: npm ci
 
-      - name: Flatpak signé
-        run: PUBLIER=1 CLE_GPG=${{ vars.CLE_GPG_ID }} sh outils/flatpak.sh
+      - name: Enveloppes.flatpak
+        run: PUBLIER=1 sh outils/flatpak.sh
 
-      - name: Site
-        run: CLE_GPG=${{ vars.CLE_GPG_ID }} ADRESSE=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }} sh outils/site-flatpak.sh
+      - name: Release
+        run: |
+          version="v$(node -p "require('./package.json').version").${{ github.run_number }}"
+          gh release create "$version" Enveloppes.flatpak --title "Enveloppes $version" --notes "${{ github.event.head_commit.message }}"
+          # On garde les 3 dernières versions
+          gh release list --limit 100 --json tagName --jq '.[3:][].tagName' | while read -r ancienne; do
+            gh release delete "$ancienne" --yes --cleanup-tag
+          done
 
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist/site
-
-  publier:
-    needs: construire
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploiement.outputs.page_url }}
-    steps:
-      - id: deploiement
-        uses: actions/deploy-pages@v4
+      - name: Prévenir FlatKein
+        env:
+          JETON: ${{ secrets.FLATKEIN_JETON }}
+        if: env.JETON != ''
+        run: GH_TOKEN="$JETON" gh api repos/Jeff12873/FlatKein/dispatches -f event_type=nouvelle-version

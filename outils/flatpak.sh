@@ -5,8 +5,8 @@
 #     sh outils/flatpak.sh
 #
 # Publication (utilisé par GitHub Actions, voir .github/workflows/flatpak.yml) :
-#     PUBLIER=1 CLE_GPG=<identifiant de la clé> sh outils/flatpak.sh
-#   → dépôt Flatpak signé dans dist/flatpak/depot, sans fabriquer de .flatpak ni installer.
+#     PUBLIER=1 sh outils/flatpak.sh
+#   → fabrique Enveloppes.flatpak sans l'installer. Le dépôt FlatKein le signe et le distribue.
 #
 # Prérequis (une seule fois) :
 #     flatpak install --user flathub org.electronjs.Electron2.BaseApp//25.08
@@ -55,17 +55,16 @@ flatpak build-finish "$CONSTRUCTION" \
   --talk-name=org.freedesktop.Notifications \
   --env=ELECTRON_OZONE_PLATFORM_HINT=auto $DONNEES > /dev/null
 
-if [ -n "$PUBLIER" ]; then
-  echo "4/4  Dépôt signé"
-  flatpak build-export --gpg-sign="$CLE_GPG" "$DEPOT" "$CONSTRUCTION" > /dev/null
-  flatpak build-update-repo --gpg-sign="$CLE_GPG" --generate-static-deltas --prune "$DEPOT" > /dev/null
-  echo "Dépôt prêt : $DEPOT"
-  exit 0
-fi
 
 echo "4/5  Dépôt local et fichier Enveloppes.flatpak"
+rm -rf "$DEPOT"
 flatpak build-export "$DEPOT" "$CONSTRUCTION" > /dev/null
 flatpak build-bundle "$DEPOT" Enveloppes.flatpak $ID
+
+if [ -n "$PUBLIER" ]; then
+  echo "Prêt à publier : Enveloppes.flatpak"
+  exit 0
+fi
 
 echo "5/5  Installation"
 flatpak install --user -y --noninteractive --reinstall Enveloppes.flatpak
