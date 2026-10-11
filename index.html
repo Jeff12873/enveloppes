@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#7b2ff7">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'">
+  <title>Enveloppes</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icone.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="socle/base.css">
+  <link rel="stylesheet" href="blocs/enveloppes/enveloppes.css">
+  <link rel="stylesheet" href="blocs/guide/guide.css">
+</head>
+<body>
+  <header class="entete">
+    <div class="marque">
+      <span class="logo"><img src="icone.svg" alt="" width="22" height="22"></span>
+      Enveloppes
+    </div>
+    <div id="actions-entete" class="ligne"></div>
+  </header>
+
+  <main id="vue" aria-live="polite"></main>
+  <nav id="menu" aria-label="Navigation principale"></nav>
+
+  <!-- Blocs : une ligne par bloc. Retirer une ligne retire la fonction. -->
+  <script type="module" src="blocs/parametres/vue.js"></script>
+  <script type="module" src="blocs/enveloppes/vue.js"></script>
+  <script type="module" src="blocs/mois/vue.js"></script>
+  <script type="module" src="blocs/historique/vue.js"></script>
+  <script type="module" src="blocs/personnes/vue.js"></script>
+  <script type="module" src="blocs/revenus/vue.js"></script>
+  <script type="module" src="blocs/exceptionnelles/vue.js"></script>
+  <script type="module" src="blocs/reevaluation/vue.js"></script>
+  <script type="module" src="blocs/controle/vue.js"></script>
+  <script type="module" src="blocs/securite/vue.js"></script>
+  <script type="module" src="blocs/sauvegarde/vue.js"></script>
+  <script type="module" src="blocs/guide/vue.js"></script>
+
+  <!-- Démarrage, toujours en dernier -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

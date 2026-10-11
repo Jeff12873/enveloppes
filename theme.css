@@ -1,0 +1,86 @@
+/* =====================================================================
+   THÈME — tout l'aspect visuel de l'application se règle ici.
+   Inspiré « Soft UI 2.0 » : lavande, cartes blanches, ombres douces,
+   dégradé violet → magenta.
+   ===================================================================== */
+
+:root {
+  /* Couleurs principales */
+  --accent: #6d4aff;              /* violet : boutons, liens, progression */
+  --accent-doux: #ece7ff;         /* fond des pastilles et zones actives */
+  --accent-texte: #ffffff;        /* texte posé sur l'accent */
+  --degrade: linear-gradient(120deg, #7b2ff7 0%, #b026d9 55%, #f107a3 100%);
+
+  /* Surfaces */
+  --fond: #f6f3ff;                /* fond de page lavande */
+  --surface: #ffffff;             /* cartes */
+  --surface-2: #faf8ff;           /* champs, zones secondaires */
+  --bordure: #e4ddfb;
+
+  /* Texte */
+  --texte: #1f1640;
+  --texte-doux: #6b6390;
+
+  /* États */
+  --succes: #12a675;
+  --alerte: #e2860c;
+  --danger: #e0355b;
+  --succes-doux: #e2f6ee;
+  --alerte-doux: #fdf0dc;
+  --danger-doux: #fde4ea;
+
+  /* Formes */
+  --arrondi: 22px;
+  --arrondi-petit: 12px;
+  --ombre: 0 10px 30px -12px rgba(76, 46, 180, .25), 0 2px 6px rgba(76, 46, 180, .06);
+  --ombre-forte: 0 20px 50px -15px rgba(76, 46, 180, .45);
+
+  /* Typographie : polices du système, rien à télécharger */
+  --police: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif;
+  --police-chiffres: ui-rounded, system-ui, sans-serif;
+  --taille: 16px;
+
+  /* Espacements */
+  --espace: 16px;
+  --largeur-max: 1100px;
+
+  color-scheme: light;
+}
+
+/* Mode sombre : automatique selon le système */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="clair"]) {
+    --accent: #9b7dff;
+    --accent-doux: #2c2257;
+    --fond: #120d24;
+    --surface: #1c1534;
+    --surface-2: #231b40;
+    --bordure: #33295e;
+    --texte: #efeaff;
+    --texte-doux: #a59cc9;
+    --succes-doux: #0f3a2c;
+    --alerte-doux: #3d2a0c;
+    --danger-doux: #42162a;
+    --ombre: 0 10px 30px -12px rgba(0, 0, 0, .6);
+    --ombre-forte: 0 20px 50px -15px rgba(0, 0, 0, .8);
+    color-scheme: dark;
+  }
+}
+
+/* Mode sombre forcé depuis les réglages */
+:root[data-theme="sombre"] {
+  --accent: #9b7dff;
+  --accent-doux: #2c2257;
+  --fond: #120d24;
+  --surface: #1c1534;
+  --surface-2: #231b40;
+  --bordure: #33295e;
+  --texte: #efeaff;
+  --texte-doux: #a59cc9;
+  --succes-doux: #0f3a2c;
+  --alerte-doux: #3d2a0c;
+  --danger-doux: #42162a;
+  --ombre: 0 10px 30px -12px rgba(0, 0, 0, .6);
+  --ombre-forte: 0 20px 50px -15px rgba(0, 0, 0, .8);
+  color-scheme: dark;
+}

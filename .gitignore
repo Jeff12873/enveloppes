@@ -1,0 +1,9 @@
+prive/
+*.enveloppes
+node_modules/
+dist/
+*.ods
+*.AppImage
+*.flatpak
+.claude/
+.directory

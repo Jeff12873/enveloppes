@@ -1,0 +1,65 @@
+# À chaque envoi sur « main » : fabrique le Flatpak, signe le dépôt et le publie sur GitHub Pages.
+# Secret nécessaire : CLE_GPG_PRIVEE (clé privée de signature).
+# Variable nécessaire : CLE_GPG_ID (identifiant de cette clé).
+
+name: Flatpak
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  construire:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Outils Flatpak
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y flatpak
+          flatpak remote-add --user --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+          flatpak install --user -y --noninteractive flathub org.freedesktop.Platform//25.08 org.electronjs.Electron2.BaseApp//25.08
+
+      - name: Clé de signature
+        run: echo "$CLE_GPG_PRIVEE" | gpg --batch --import
+        env:
+          CLE_GPG_PRIVEE: ${{ secrets.CLE_GPG_PRIVEE }}
+
+      - name: Dépendances
+        run: npm ci
+
+      - name: Flatpak signé
+        run: PUBLIER=1 CLE_GPG=${{ vars.CLE_GPG_ID }} sh outils/flatpak.sh
+
+      - name: Site
+        run: CLE_GPG=${{ vars.CLE_GPG_ID }} ADRESSE=https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }} sh outils/site-flatpak.sh
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/site
+
+  publier:
+    needs: construire
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploiement.outputs.page_url }}
+    steps:
+      - id: deploiement
+        uses: actions/deploy-pages@v4

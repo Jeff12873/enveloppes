@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Enveloppes
+Comment=Épargne de couple en enveloppes, au prorata des revenus
+Exec=enveloppes %U
+Icon=fr.enveloppes.Enveloppes
+Categories=Office;Finance;
+Keywords=budget;épargne;enveloppes;prorata;
+StartupWMClass=enveloppes
+Terminal=false

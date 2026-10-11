@@ -1,0 +1,230 @@
+/* =====================================================================
+   MISE EN PAGE ET COMPOSANTS COMMUNS
+   Les couleurs viennent de theme.css : ne pas en écrire en dur ici.
+   ===================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { font-size: var(--taille); -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--police);
+  color: var(--texte);
+  background: var(--fond);
+  line-height: 1.45;
+}
+
+h1, h2, h3 { line-height: 1.2; margin: 0 0 .5em; }
+h1 { font-size: 1.7rem; letter-spacing: -.02em; }
+h2 { font-size: 1.2rem; }
+h3 { font-size: 1rem; }
+p { margin: 0 0 .75em; }
+a { color: var(--accent); }
+a.pastille { text-decoration: none; }
+
+.svg-icone { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+
+/* --- Structure : en-tête, menu, contenu ------------------------------------ */
+
+.entete {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px var(--espace);
+  background: var(--degrade);
+  color: #fff;
+  box-shadow: var(--ombre);
+}
+.entete .marque { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; margin-right: auto; }
+.entete .marque .logo { width: 34px; height: 34px; border-radius: 11px; background: rgba(255, 255, 255, .2); display: grid; place-items: center; }
+.entete button {
+  display: flex; align-items: center; gap: 6px;
+  border: 0; border-radius: 999px; padding: 7px 12px;
+  background: rgba(255, 255, 255, .18); color: #fff; font: inherit; font-size: .85rem; cursor: pointer;
+}
+.entete button:hover { background: rgba(255, 255, 255, .3); }
+.entete button.erreur { background: rgba(255, 60, 90, .55); }
+.entete button.en-cours .svg-icone { animation: tourne 1s linear infinite; }
+@keyframes tourne { to { transform: rotate(360deg); } }
+
+#vue {
+  width: 100%; max-width: var(--largeur-max);
+  margin: 0 auto;
+  padding: var(--espace) var(--espace) 110px;
+}
+
+#menu {
+  position: fixed; left: 50%; bottom: 14px; z-index: 10;
+  transform: translateX(-50%);
+  display: flex; gap: 4px; padding: 6px;
+  background: var(--surface); border-radius: 999px;
+  box-shadow: var(--ombre-forte);
+}
+#menu a {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 68px; padding: 7px 10px; border-radius: 999px;
+  color: var(--texte-doux); text-decoration: none; font-size: .72rem; font-weight: 600;
+}
+#menu a.actif { background: var(--accent-doux); color: var(--accent); }
+body[data-ecran="guide"] #menu, body[data-ecran="verrou"] #menu,
+body[data-ecran="guide"] .entete button, body[data-ecran="verrou"] .entete button { display: none; }
+
+@media (min-width: 900px) {
+  body { padding-left: 110px; }
+  #menu {
+    left: 16px; top: 90px; bottom: auto; transform: none;
+    flex-direction: column; border-radius: 28px; padding: 8px;
+  }
+  #menu a { min-width: 76px; padding: 12px 8px; border-radius: 20px; font-size: .78rem; }
+  #vue { padding-bottom: 40px; }
+  body[data-ecran="guide"], body[data-ecran="verrou"] { padding-left: 0; }
+}
+
+/* --- Titres, grilles ------------------------------------------------------- */
+
+.titre-page { margin: 8px 0 18px; }
+.titre-page p { color: var(--texte-doux); margin: 0; }
+
+.grille { display: grid; gap: var(--espace); grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); }
+.ligne { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.ligne.entre { justify-content: space-between; }
+.pile > * + * { margin-top: var(--espace); }
+.doux { color: var(--texte-doux); }
+.petit { font-size: .85rem; }
+.chiffre { font-family: var(--police-chiffres); font-variant-numeric: tabular-nums; font-weight: 700; }
+.gros-chiffre { font-family: var(--police-chiffres); font-size: 2rem; font-weight: 800; letter-spacing: -.02em; }
+.cache { display: none !important; }
+
+/* --- Cartes ----------------------------------------------------------------- */
+
+.carte {
+  background: var(--surface);
+  border-radius: var(--arrondi);
+  padding: 18px;
+  box-shadow: var(--ombre);
+  min-width: 0;
+}
+.carte.cliquable { cursor: pointer; transition: transform .15s, box-shadow .15s; }
+.carte.cliquable:hover { transform: translateY(-2px); box-shadow: var(--ombre-forte); }
+.carte.vedette { background: var(--degrade); color: #fff; }
+.carte.vedette .doux { color: rgba(255, 255, 255, .8); }
+.carte h2 { margin-bottom: 12px; }
+
+/* --- Boutons ------------------------------------------------------------- */
+
+.bouton {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 10px 20px;
+  border: 0; border-radius: 999px;
+  font: inherit; font-weight: 650; cursor: pointer;
+  transition: filter .15s, transform .1s;
+}
+.bouton:active { transform: scale(.97); }
+.bouton:disabled { opacity: .45; cursor: not-allowed; }
+.bouton.principal { background: var(--accent); color: var(--accent-texte); box-shadow: 0 8px 20px -10px var(--accent); }
+.bouton.principal:hover { filter: brightness(1.08); }
+.bouton.secondaire { background: var(--accent-doux); color: var(--accent); }
+.bouton.danger { background: var(--danger-doux); color: var(--danger); }
+.bouton.lien { background: none; color: var(--accent); padding: 4px 8px; min-height: 0; text-decoration: underline; }
+.bouton.flottant {
+  position: fixed; right: 20px; bottom: 90px; z-index: 9;
+  width: 58px; height: 58px; padding: 0;
+  background: var(--degrade); color: #fff; box-shadow: var(--ombre-forte);
+}
+@media (min-width: 900px) { .bouton.flottant { bottom: 30px; right: 30px; } }
+
+.onglets { display: inline-flex; gap: 4px; padding: 4px; background: var(--accent-doux); border-radius: 999px; flex-wrap: wrap; }
+.onglets button { border: 0; background: none; padding: 7px 14px; border-radius: 999px; font: inherit; font-size: .88rem; color: var(--accent); cursor: pointer; }
+.onglets button.actif { background: var(--surface); box-shadow: var(--ombre); font-weight: 650; }
+
+/* --- Formulaires -------------------------------------------------------------- */
+
+.champ { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.champ .libelle { font-size: .85rem; font-weight: 650; color: var(--texte-doux); }
+.champ .aide { color: var(--texte-doux); font-size: .78rem; }
+.saisie {
+  width: 100%; min-height: 44px; padding: 10px 14px;
+  border: 1.5px solid var(--bordure); border-radius: var(--arrondi-petit);
+  background: var(--surface-2); color: var(--texte); font: inherit;
+}
+.saisie:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-doux); }
+.saisie.montant { font-family: var(--police-chiffres); font-weight: 650; text-align: right; }
+input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--accent); }
+.case { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.formulaire { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); }
+.formulaire .large { grid-column: 1 / -1; }
+
+/* --- Progression, pastilles, bandeaux ------------------------------------------ */
+
+.barre { height: 10px; border-radius: 999px; background: var(--accent-doux); overflow: hidden; }
+.barre-remplie { height: 100%; border-radius: 999px; background: var(--degrade); transition: width .4s; }
+
+.pastille {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: 999px;
+  background: var(--accent-doux); color: var(--accent);
+  font-size: .75rem; font-weight: 650; white-space: nowrap;
+}
+.pastille.succes { background: var(--succes-doux); color: var(--succes); }
+.pastille.alerte { background: var(--alerte-doux); color: var(--alerte); }
+.pastille.danger { background: var(--danger-doux); color: var(--danger); }
+.pastille.neutre { background: var(--surface-2); color: var(--texte-doux); }
+
+.bandeau {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
+  padding: 12px 16px; border-radius: var(--arrondi-petit);
+  border-left: 4px solid currentColor; font-weight: 550;
+}
+.bandeau.info { background: var(--accent-doux); color: var(--accent); }
+.bandeau.alerte { background: var(--alerte-doux); color: var(--alerte); }
+.bandeau.danger { background: var(--danger-doux); color: var(--danger); }
+.bandeau.succes { background: var(--succes-doux); color: var(--succes); }
+.bandeau > span { color: var(--texte); }
+.bandeaux { display: grid; gap: 8px; margin-bottom: var(--espace); }
+
+/* --- Tableaux ------------------------------------------------------------------ */
+
+.tableau-defile { overflow-x: auto; }
+.tableau { width: 100%; border-collapse: collapse; font-size: .9rem; }
+.tableau th { text-align: left; font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--texte-doux); padding: 8px 10px; }
+.tableau td { padding: 10px; border-top: 1px solid var(--bordure); }
+.tableau td:not(:first-child), .tableau th:not(:first-child) { text-align: right; }
+.tableau.gauche td, .tableau.gauche th { text-align: left; }
+.tableau tr.barre-texte td { text-decoration: line-through; color: var(--texte-doux); }
+
+/* --- Fenêtres, notifications ------------------------------------------------- */
+
+.fenetre {
+  width: min(560px, calc(100% - 24px)); max-height: calc(100% - 40px);
+  border: 0; border-radius: var(--arrondi); padding: 22px;
+  background: var(--surface); color: var(--texte); box-shadow: var(--ombre-forte);
+}
+.fenetre::backdrop { background: rgba(20, 10, 50, .45); backdrop-filter: blur(4px); }
+.fenetre-contenu { display: grid; gap: 14px; margin: 14px 0 20px; }
+.fenetre-actions { display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+
+.notification {
+  position: fixed; left: 50%; top: 20px; z-index: 100;
+  transform: translate(-50%, -30px); opacity: 0; transition: .3s;
+  padding: 12px 20px; border-radius: 999px;
+  background: var(--texte); color: var(--surface); font-weight: 600; box-shadow: var(--ombre-forte);
+}
+.notification.visible { transform: translate(-50%, 0); opacity: 1; }
+.notification.danger { background: var(--danger); color: #fff; }
+
+/* --- Étapes (assistants) --------------------------------------------------- */
+
+.etapes { display: flex; gap: 6px; margin-bottom: 18px; }
+.etapes span { flex: 1; height: 6px; border-radius: 999px; background: var(--accent-doux); }
+.etapes span.faite { background: var(--degrade); }
+.navigation-etapes { display: flex; justify-content: space-between; gap: 10px; margin-top: 20px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* --- Écrans centrés (verrou, guide) ------------------------------------------ */
+
+.ecran-centre { max-width: 460px; margin: 6vh auto 0; }
+.ecran-centre.large { max-width: 760px; }

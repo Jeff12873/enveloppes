@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>fr.enveloppes.Enveloppes</id>
+  <name>Enveloppes</name>
+  <summary>Épargne de couple en enveloppes, au prorata des revenus</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+  <description>
+    <p>Chaque mois, les salaires nets fixent le prorata, le reste du plus petit salaire
+    détermine ce que verse le plus gros, et l'épargne commune se répartit dans des enveloppes projets.</p>
+    <p>Données chiffrées, synchronisées par un simple fichier. Aucun accès à Internet.</p>
+  </description>
+  <launchable type="desktop-id">fr.enveloppes.Enveloppes.desktop</launchable>
+  <content_rating type="oars-1.1"/>
+  <releases>
+    <release version="1.0.0" date="2026-10-11"/>
+  </releases>
+</component>

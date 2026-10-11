@@ -1,0 +1,45 @@
+{
+  "name": "enveloppes",
+  "productName": "Enveloppes",
+  "version": "1.0.0",
+  "description": "Épargne de couple en enveloppes, au prorata des revenus.",
+  "main": "bureau/main.js",
+  "private": true,
+  "scripts": {
+    "demarrer": "electron .",
+    "appimage": "electron-builder --linux AppImage"
+  },
+  "devDependencies": {
+    "electron": "44.7.0",
+    "electron-builder": "26.15.3"
+  },
+  "build": {
+    "appId": "fr.enveloppes.app",
+    "productName": "Enveloppes",
+    "artifactName": "Enveloppes-${version}.AppImage",
+    "files": [
+      "index.html",
+      "app.js",
+      "theme.css",
+      "manifest.json",
+      "sw.js",
+      "icone.svg",
+      "socle/**",
+      "blocs/**",
+      "bureau/**",
+      "package.json"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Office",
+      "icon": "bureau/icone.png",
+      "synopsis": "Épargne de couple en enveloppes",
+      "syncDesktopName": true
+    }
+  },
+  "author": "Enveloppes",
+  "desktopName": "enveloppes.desktop"
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Enveloppes",
+  "short_name": "Enveloppes",
+  "description": "Épargne de couple en enveloppes, au prorata des revenus.",
+  "lang": "fr",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f6f3ff",
+  "theme_color": "#7b2ff7",
+  "icons": [
+    { "src": "icone.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
